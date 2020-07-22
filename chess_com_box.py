@@ -43,7 +43,7 @@ def validate_and_init() -> bool:
 
 
 def get_adjusted_line(title_and_value: TitleAndValue, max_line_length: int) -> str:
-    separation = MAX_LINE_LENGTH - (
+    separation = max_line_length - (
         len(title_and_value.title) + len(title_and_value.value) + 2
     )
     separator = f" {WIDTH_JUSTIFICATION_SEPARATOR * separation} "
