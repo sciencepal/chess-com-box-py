@@ -12,8 +12,6 @@ from github import Github
 
 WIDTH_JUSTIFICATION_SEPARATOR = "."
 GIST_TITLE = "♟︎ Chess.com Ratings"
-MAX_LINE_LENGTH = 52
-
 
 ENV_VAR_GIST_ID = "GIST_ID"
 ENV_VAR_GITHUB_TOKEN = "GH_TOKEN"
@@ -44,7 +42,7 @@ def validate_and_init() -> bool:
     return True
 
 
-def get_adjusted_line(title_and_value: TitleAndValue) -> str:
+def get_adjusted_line(title_and_value: TitleAndValue, max_line_length: int) -> str:
     separation = MAX_LINE_LENGTH - (
         len(title_and_value.title) + len(title_and_value.value) + 2
     )
@@ -65,7 +63,7 @@ def get_rating_line(
     chess_url: str, chess_emoji: str, chess_format: str, username: str
 ) -> TitleAndValue:
     rating = scrape_chess_com_rating(chess_url.format(format=chess_format.lower(), user=username))
-    return TitleAndValue(chess_emoji + " " + chess_format, rating + "📈")
+    return TitleAndValue(chess_emoji + " " + chess_format, rating + " 📈")
 
 
 def update_gist(title: str, content: str) -> bool:
@@ -92,11 +90,11 @@ def main():
     daily_line = get_rating_line(DAILY_URL_FORMAT, "☀️", "Daily", chess_com_user_name)
 
     lines = [
-        get_adjusted_line(blitz_line),
-        get_adjusted_line(bullet_line),
-        get_adjusted_line(rapid_line),
-        get_adjusted_line(puzzles_line),
-        get_adjusted_line(daily_line)
+        get_adjusted_line(blitz_line, 52),
+        get_adjusted_line(bullet_line, 52),
+        get_adjusted_line(rapid_line, 53),
+        get_adjusted_line(puzzles_line, 52),
+        get_adjusted_line(daily_line, 53)
     ]
     content = "\n".join(lines)
     update_gist(GIST_TITLE, content)
