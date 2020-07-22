@@ -12,7 +12,7 @@ from github import Github
 
 WIDTH_JUSTIFICATION_SEPARATOR = "."
 GIST_TITLE = "♟︎ Chess.com Ratings"
-MAX_LINE_LENGTH = 54
+MAX_LINE_LENGTH = 52
 
 
 ENV_VAR_GIST_ID = "GIST_ID"
@@ -65,7 +65,7 @@ def get_rating_line(
     chess_url: str, chess_emoji: str, chess_format: str, username: str
 ) -> TitleAndValue:
     rating = scrape_chess_com_rating(chess_url.format(format=chess_format.lower(), user=username))
-    return TitleAndValue(chess_emoji + " " + chess_format, "📈 " + rating)
+    return TitleAndValue(chess_emoji + " " + chess_format, rating + "📈")
 
 
 def update_gist(title: str, content: str) -> bool:
@@ -87,7 +87,7 @@ def main():
 
     blitz_line = get_rating_line(LIVE_URL_FORMAT, "⚡", "Blitz", chess_com_user_name)
     bullet_line = get_rating_line(LIVE_URL_FORMAT, "🚅", "Bullet", chess_com_user_name)
-    rapid_line = get_rating_line(LIVE_URL_FORMAT, "⏱️", "Rapid", chess_com_user_name)
+    rapid_line = get_rating_line(LIVE_URL_FORMAT, "⏲️", "Rapid", chess_com_user_name)
     puzzles_line = get_rating_line(PUZZLES_URL_FORMAT, "🧩", "Puzzles", chess_com_user_name)
     daily_line = get_rating_line(DAILY_URL_FORMAT, "☀️", "Daily", chess_com_user_name)
 
