@@ -62,10 +62,10 @@ def scrape_chess_com_rating(rating_url: str) -> str:
 
 
 def get_rating_line(
-    chess_url: str, chess_format: str, username: str
+    chess_url: str, chess_emoji: str, chess_format: str, username: str
 ) -> TitleAndValue:
     rating = scrape_chess_com_rating(chess_url.format(format=chess_format.lower(), user=username))
-    return TitleAndValue(chess_format, rating)
+    return TitleAndValue(chess_emoji + " " + chess_format, "📈 " + rating)
 
 
 def update_gist(title: str, content: str) -> bool:
@@ -85,11 +85,11 @@ def main():
 
     chess_com_user_name = os.environ[ENV_VAR_CHESS_COM_USERNAME]
 
-    blitz_line = get_rating_line(LIVE_URL_FORMAT, "Blitz", chess_com_user_name)
-    bullet_line = get_rating_line(LIVE_URL_FORMAT, "Bullet", chess_com_user_name)
-    rapid_line = get_rating_line(LIVE_URL_FORMAT, "Rapid", chess_com_user_name)
-    puzzles_line = get_rating_line(PUZZLES_URL_FORMAT, "Puzzles", chess_com_user_name)
-    daily_line = get_rating_line(DAILY_URL_FORMAT, "Daily", chess_com_user_name)
+    blitz_line = get_rating_line(LIVE_URL_FORMAT, "⚡", "Blitz", chess_com_user_name)
+    bullet_line = get_rating_line(LIVE_URL_FORMAT, "🚅", "Bullet", chess_com_user_name)
+    rapid_line = get_rating_line(LIVE_URL_FORMAT, "⏱️", "Rapid", chess_com_user_name)
+    puzzles_line = get_rating_line(PUZZLES_URL_FORMAT, "🧩", "Puzzles", chess_com_user_name)
+    daily_line = get_rating_line(DAILY_URL_FORMAT, "☀️", "Daily", chess_com_user_name)
 
     lines = [
         get_adjusted_line(blitz_line),
