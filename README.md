@@ -42,3 +42,6 @@ pipenv run python chess_com_box.py test <gist-id> <github-token> <user>
 # example
 # pipenv run python chess_com_box.py test ce5221fc5f3739d2c81ce7db99f17519 cf9181618bf1618253d17161843f71a2bb161850 sciencepal
 ```
+
+## ✨ Credits
+This code was heavily inspired (with some code taken over) by [@aksh1618's codestats-box-python](https://github.com/aksh1618/codestats-box-python).
