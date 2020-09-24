@@ -92,9 +92,9 @@ def main():
     lines = [
         get_adjusted_line(blitz_line, 52),
         get_adjusted_line(bullet_line, 52),
-        get_adjusted_line(rapid_line, 52),
+        get_adjusted_line(rapid_line, 53),
         get_adjusted_line(puzzles_line, 52),
-        get_adjusted_line(daily_line, 52)
+        get_adjusted_line(daily_line, 53)
     ]
     content = "\n".join(lines)
     update_gist(GIST_TITLE, content)
