@@ -90,11 +90,11 @@ def main():
     daily_line = get_rating_line(DAILY_URL_FORMAT, "☀️", "Daily", chess_com_user_name)
 
     lines = [
-        get_adjusted_line(blitz_line, 53),
+        get_adjusted_line(blitz_line, 52),
         get_adjusted_line(bullet_line, 52),
-        get_adjusted_line(rapid_line, 53),
+        get_adjusted_line(rapid_line, 52),
         get_adjusted_line(puzzles_line, 52),
-        get_adjusted_line(daily_line, 54)
+        get_adjusted_line(daily_line, 52)
     ]
     content = "\n".join(lines)
     update_gist(GIST_TITLE, content)
