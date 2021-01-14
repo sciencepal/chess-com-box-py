@@ -22,9 +22,10 @@ REQUIRED_ENVS = [
     ENV_VAR_CHESS_COM_USERNAME
 ]
 
-LIVE_URL_FORMAT = "https://www.chess.com/stats/live/{format}/{user}"
-PUZZLES_URL_FORMAT = "https://www.chess.com/stats/{format}/{user}"
-DAILY_URL_FORMAT = "https://www.chess.com/stats/{format}/chess/{user}"
+# LIVE_URL_FORMAT = "https://www.chess.com/stats/live/{format}/{user}"
+# PUZZLES_URL_FORMAT = "https://www.chess.com/stats/{format}/{user}"
+# DAILY_URL_FORMAT = "https://www.chess.com/stats/{format}/chess/{user}"
+STATS_URL = "https://api.chess.com/pub/player/{user}/stats"
 
 TitleAndValue = namedtuple("TitleAndValue", "title value")
 
@@ -50,19 +51,18 @@ def get_adjusted_line(title_and_value: TitleAndValue, max_line_length: int) -> s
     return title_and_value.title + separator + title_and_value.value
 
 
-def scrape_chess_com_rating(rating_url: str) -> str:
-    page = requests.get(rating_url, headers = {"Accept-Language": "en-US, en;q=0.5"})
-    soup = BeautifulSoup(page.content, 'html.parser')
-    rating_div = soup.find('div', 'main-chart-stats-current')
-    if rating_div is None:
-        return
-    return rating_div.text
+def get_chess_com_stats(user: str = "sciencepal") -> dict:
+    stats_dict = requests.get(STATS_URL.format(user=user)).json()
+    return stats_dict
 
 
 def get_rating_line(
-    chess_url: str, chess_emoji: str, chess_format: str, username: str
+    stats_key: str, chess_emoji: str, chess_format: str, chess_stats: dict
 ) -> TitleAndValue:
-    rating = scrape_chess_com_rating(chess_url.format(format=chess_format.lower(), user=username))
+    try:
+        rating = str(chess_stats.get(stats_key).get(chess_format == "Tactics"? "highest": "last").get("rating"))
+    except Exception as e:
+        rating = "N/A"
     return TitleAndValue(chess_emoji + " " + chess_format, rating + " 📈")
 
 
@@ -82,12 +82,13 @@ def main():
         return
 
     chess_com_user_name = os.environ[ENV_VAR_CHESS_COM_USERNAME]
+    chess_stats = get_chess_com_stats(chess_com_user_name)
 
-    blitz_line = get_rating_line(LIVE_URL_FORMAT, "⚡", "Blitz", chess_com_user_name)
-    bullet_line = get_rating_line(LIVE_URL_FORMAT, "🚅", "Bullet", chess_com_user_name)
-    rapid_line = get_rating_line(LIVE_URL_FORMAT, "⏲️", "Rapid", chess_com_user_name)
-    puzzles_line = get_rating_line(PUZZLES_URL_FORMAT, "🧩", "Puzzles", chess_com_user_name)
-    daily_line = get_rating_line(DAILY_URL_FORMAT, "☀️", "Daily", chess_com_user_name)
+    blitz_line = get_rating_line("chess_blitz", "⚡", "Blitz", chess_stats)
+    bullet_line = get_rating_line("chess_bullet", "🚅", "Bullet", chess_stats)
+    rapid_line = get_rating_line("chess_rapid", "⏲️", "Rapid", chess_stats)
+    puzzles_line = get_rating_line("tactics", "🧩", "Tactics", chess_stats)
+    daily_line = get_rating_line("chess_daily", "☀️", "Daily", chess_stats)
 
     lines = [
         get_adjusted_line(blitz_line, 52),
