@@ -60,7 +60,7 @@ def get_rating_line(
     stats_key: str, chess_emoji: str, chess_format: str, chess_stats: dict
 ) -> TitleAndValue:
     try:
-        rating = str(chess_stats.get(stats_key).get(chess_format == "Tactics"? "highest": "last").get("rating"))
+        rating = str(chess_stats.get(stats_key).get("highest" if (chess_format == "Tactics") else "last").get("rating"))
     except Exception as e:
         rating = "N/A"
     return TitleAndValue(chess_emoji + " " + chess_format, rating + " 📈")
