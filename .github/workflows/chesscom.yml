@@ -1,9 +1,10 @@
 name: Update gist with Chess.com Ratings
 on:
-  push:
-    branches: master
-  schedule:
-    - cron: "0 * * * *"
+    workflow_dispatch:
+    schedule:
+        - cron: '0 */12 * * *'
+    push:
+        branches: master
 jobs:
   update-gist:
     runs-on: ubuntu-latest
