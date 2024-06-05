@@ -52,7 +52,10 @@ def get_adjusted_line(title_and_value: TitleAndValue, max_line_length: int) -> s
 
 
 def get_chess_com_stats(user: str = "sciencepal") -> dict:
-    stats_dict = requests.get(STATS_URL.format(user=user)).json()
+    headers = {
+        'User-Agent': f'chess-com-box-py @{user}'
+    }
+    stats_dict = requests.get(STATS_URL.format(user=user), headers=headers).json()
     return stats_dict
 
 
