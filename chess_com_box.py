@@ -52,7 +52,9 @@ def get_adjusted_line(title_and_value: TitleAndValue, max_line_length: int) -> s
 
 
 def get_chess_com_stats(user: str = "sciencepal") -> dict:
-    stats_dict = requests.get(STATS_URL.format(user=user)).json()
+    req = requests.get(STATS_URL.format(user=user))
+    print(req)
+    stats_dict = req.json()
     return stats_dict
 
 
