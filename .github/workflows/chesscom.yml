@@ -1,5 +1,6 @@
 name: Update gist with Chess.com Ratings
 on:
+  workflow_dispatch:
   push:
     branches: master
   schedule:
