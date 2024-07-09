@@ -16,4 +16,3 @@ pyjwt==1.7.1
 requests==2.24.0
 urllib3==1.25.9
 wrapt==1.12.1
-json
