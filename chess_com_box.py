@@ -6,6 +6,7 @@ import sys
 from bs4 import BeautifulSoup
 from typing import List
 from github.InputFileContent import InputFileContent
+import json
 
 import requests
 from github import Github
@@ -72,10 +73,12 @@ def get_rating_line(
 def update_gist(title: str, content: str) -> bool:
     access_token = os.environ[ENV_VAR_GITHUB_TOKEN]
     gist_id = os.environ[ENV_VAR_GIST_ID]
-    gist = Github(access_token).get_gist(gist_id)
-    # Shouldn't necessarily work, keeping for case of single file made in hurry to get gist id.
-    old_title = list(gist.files.keys())[0]
-    gist.edit(title, {old_title: InputFileContent(content, title)})
+    # gist = Github(access_token).get_gist(gist_id)
+    # # Shouldn't necessarily work, keeping for case of single file made in hurry to get gist id.
+    # old_title = list(gist.files.keys())[0]
+    # gist.edit(title, {old_title: InputFileContent(content, title)})
+    headers = {'Authorization': f'token {access_token}'}
+    r = requests.patch('https://api.github.com/gists/' + gist_id, data=json.dumps({'files':{title:{"content":content}}}),headers=headers) 
     print(f"{title}\n{content}")
 
 
